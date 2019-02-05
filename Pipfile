@@ -9,8 +9,6 @@ verify_ssl = true
 django = "*"
 psycopg2 = "*"
 imdbpy = "*"
-python = "*"
-python3 = "*"
 django-heroku = "*"
 
 [requires]
