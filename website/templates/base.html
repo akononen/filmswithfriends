@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Films with friends base{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+  <form method="post" action="">
+    {% csrf_token %}
+    <input type="text" name="text">
+    <input type="submit" value="submit">
+  </form>
+
+{% for text in text_list %}
+  <p> {{ text.input }} </p>
+{% endfor %}
+
+
+</body>
+</html>
