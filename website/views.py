@@ -4,11 +4,6 @@ from django.http import JsonResponse
 from website.models import *
 import json
 
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the test page.")
-# Create your views here.
-
 def textinput(request):
     #saving input text to db
     if request.method == "POST":
