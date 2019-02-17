@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="notification">
+    {% if user.is_authenticated %}
+      <h3>Hello {{user.username}}</h3>
+    {% else %}
+      <h3>First you must login or signup</h3>
+    {% endif %}
+  </div>
+{% endblock %}

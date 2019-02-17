@@ -4,19 +4,40 @@
   <meta charset="utf-8">
   <title>{% block title %}Films with friends base{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-  <form method="post" action="">
-    {% csrf_token %}
-    <input type="text" name="text">
-    <input type="submit" value="submit">
-  </form>
+  <!-- Navigation bar for the service, where current page is colored -->
+  <nav class="navbar navbar-default" style="background-color:grey">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/home">Films with friends</a>
+    </div>
+    <ul id="navbar" class="nav navbar-nav">
+      <li {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>
+        <a href="/home">Home</a></li>
+      {% if user.is_authenticated %}
+        <li {% if request.resolver_match.url_name == 'profile' %}class="active"{% endif %}>
+          <a href="/profile">Profile</a></li>
+        <li class="link"><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>
+          <a href="{% url 'login' %}">Login</a></li>
+        <li {% if request.resolver_match.url_name == 'signup' %}class="active"{% endif %}>
+          <a href="{% url 'signup' %}">Signup</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+  <main>
 
-{% for text in text_list %}
-  <p> {{ text.input }} </p>
-{% endfor %}
-
-
+    <div id="stuff">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
 </body>
+
 </html>
