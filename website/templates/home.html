@@ -7,5 +7,14 @@
     {% else %}
       <h3>First you must login or signup</h3>
     {% endif %}
-  </div>
+</div>
+
+<h2> Rate a movie </h2>
+<div class ="container">
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Rate</button>
+</form>
+</div>
 {% endblock %}

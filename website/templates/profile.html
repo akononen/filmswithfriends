@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+{% comment %}
+{% block title %}Add a friend{% endblock %}
+
+
+<div class="container">
+  <h2>Add a friend</h2>
+    <form action="" merhod="post">
+      <label for="friend_username">Friends username: </label>
+      <input id="friend_username" type="text" name="friend_username">
+      <input type="submit" value="Add">
+
+</div>
+
+{%endcomment %}
+<div class="container">
+  <h2>Other users: </h2>
+  {% for user in user_list %}
+  <p> {{user.username}} </p>
+  {% endfor %}
+</div>
+<div class="container">
+  <h2>Rated movies:</h2>
+
+  <table id="rated_movies" class="table table-striped table-bordered" style="width:100%">
+    <thead style="font-weight:bold">
+      <tr>
+        <th>Title</th>
+        <th>Rating</th>
+        <th>Edit rating</th>
+        <th>Remove rating</th>
+    </tr>
+    </thead>
+  <tbody>
+    {%for rating in movies_list %}
+    <tr>
+      <td> {{rating.title}} </td>
+      <td> {{rating.rating}} </td>
+      <td> EDIT </td>
+      <td> <a href="/profile/remove_rating/{{rating.id}}"">Remove</a></td>
+    </tr>
+    {%endfor%}
+
+</div>
+{% endblock %}
