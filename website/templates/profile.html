@@ -28,7 +28,7 @@
       <tr>
         <th>Title</th>
         <th>Rating</th>
-        <th>Edit rating</th>
+        <th>Change rating to</th>
         <th>Remove rating</th>
     </tr>
     </thead>
@@ -37,8 +37,15 @@
     <tr>
       <td> {{rating.title}} </td>
       <td> {{rating.rating}} </td>
-      <td> EDIT </td>
-      <td> <a href="/profile/remove_rating/{{rating.id}}"">Remove</a></td>
+      <td>
+        <a href="/profile/change_rating/{{rating.id}}/0">0</a> 
+        <a href="/profile/change_rating/{{rating.id}}/1">1</a>
+        <a href="/profile/change_rating/{{rating.id}}/2">2</a>
+        <a href="/profile/change_rating/{{rating.id}}/3">3</a>
+        <a href="/profile/change_rating/{{rating.id}}/4">4</a>
+        <a href="/profile/change_rating/{{rating.id}}/5">5</a>
+       </td>
+      <td> <a href="/profile/remove_rating/{{rating.id}}">Remove</a></td>
     </tr>
     {%endfor%}
 

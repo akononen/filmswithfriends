@@ -8,12 +8,15 @@ https://filmswithfriends.herokuapp.com/
   - Signup
   - Login
   - Logout
+  - Rate movies
+    - See ratings
+    - Edit rating
+    - Remove rating
 
 ## Functinalities TODO:
   - Add friend
   - Friends list
   - Connection with IMDb database
-  - Rate movies
   - Analyze user ratings
   - Analyze suitable movies for two users
   - See suitable movies to watch with a friend

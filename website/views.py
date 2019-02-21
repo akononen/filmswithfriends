@@ -52,6 +52,11 @@ def remove_rating(request, movie_rating_id):
     movie_rating.delete()
     return HttpResponseRedirect("/profile/")
 
+def change_rating(request, movie_rating_id, new_rating):
+    movie_rating = MovieRating.objects.get(id=movie_rating_id)
+    movie_rating.rating = new_rating
+    movie_rating.save()
+    return HttpResponseRedirect("/profile/")
 # adding a friend to one-to-one link and to connections
 #def add_friend(user, friend):
 #    c1 = Connection(user1=user, user2=friend)
