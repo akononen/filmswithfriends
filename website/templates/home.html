@@ -4,7 +4,9 @@
 <div id="notification">
     {% if user.is_authenticated %}
       <h3>Hello {{user.username}}</h3>
-
+      {% if message %}
+      <h4> {{message}} </h4>
+      {%endif%}
     {% else %}
       <h3>First you must login or signup</h3>
     {% endif %}

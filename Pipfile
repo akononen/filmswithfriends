@@ -11,6 +11,7 @@ psycopg2 = "*"
 imdbpy = "*"
 django-heroku = "*"
 gunicorn = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.6"

@@ -27,18 +27,41 @@ def save_user_profile(sender, instance, **kwargs):
 class RatingInfo(models.Model):
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(validators=(MinValueValidator(0),MaxValueValidator(5)))
+
     class Meta:
         abstract = True
 class MovieRating(RatingInfo):
     title = models.CharField(blank=False, null=False, max_length=255, default='')
+    imdb_movie_id = models.CharField(blank=False, null=False, max_length=100, default="")
 class GenreRating(RatingInfo):
     genre = models.CharField(blank=False, null=False, max_length=255, default='')
 class DirectorRating(RatingInfo):
     director = models.CharField(blank=False, null=False, max_length=255, default='')
+    imdb_person_id = models.CharField(blank=False, null=False, max_length=100, default="")
 class WriterRating(RatingInfo):
     writer = models.CharField(blank=False, null=False, max_length=255, default='')
+    imdb_person_id = models.CharField(blank=False, null=False, max_length=100, default="")
 class ActorRating(RatingInfo):
     actor = models.CharField(blank=False, null=False, max_length=255, default='')
+    imdb_person_id = models.CharField(blank=False, null=False, max_length=100, default="")
+
+class Movie(models.Model):
+    imdb_movie_id = models.CharField(blank=False, null=False, unique=True, max_length=100, default="")
+    title = models.CharField(blank=False, null=False, max_length=255, default='')
+    genre1 = models.CharField(blank=False, null=False, max_length=255, default='')
+    genre2 = models.CharField(blank=False, null=False, max_length=255, default='')
+    genre3 = models.CharField(blank=False, null=False, max_length=255, default='')
+    director = models.CharField(blank=False, null=False, max_length=255, default='')
+    director_id = models.CharField(blank=False, null=False, max_length=100, default="")
+    writer = models.CharField(blank=False, null=False, max_length=255, default='')
+    writer_id = models.CharField(blank=False, null=False, max_length=100, default="")
+    actor1 = models.CharField(blank=False, null=False, max_length=255, default='')
+    actor1_id = models.CharField(blank=False, null=False, max_length=100, default="")
+    actor2 = models.CharField(blank=False, null=False, max_length=255, default='')
+    actor2_id = models.CharField(blank=False, null=False, max_length=100, default="")
+    actor3 = models.CharField(blank=False, null=False, max_length=255, default='')
+    actor3_id = models.CharField(blank=False, null=False, max_length=100, default="")
+
 #connection throughtable
 #class Connection(models.Model):
 #    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="friends")

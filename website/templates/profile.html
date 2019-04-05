@@ -17,7 +17,7 @@
 <div class="container">
   <h2>Other users: </h2>
   {% for user in user_list %}
-  <p> {{user.username}} </p>
+  <a href="/recommendations/{{user.id}}">{{user.username}}</a>
   {% endfor %}
 </div>
 <div class="container">
@@ -38,7 +38,7 @@
       <td> {{rating.title}} </td>
       <td> {{rating.rating}} </td>
       <td>
-        <a href="/profile/change_rating/{{rating.id}}/0">0</a> 
+        <a href="/profile/change_rating/{{rating.id}}/0">0</a>
         <a href="/profile/change_rating/{{rating.id}}/1">1</a>
         <a href="/profile/change_rating/{{rating.id}}/2">2</a>
         <a href="/profile/change_rating/{{rating.id}}/3">3</a>
