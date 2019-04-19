@@ -48,6 +48,7 @@ class ActorRating(RatingInfo):
 class Movie(models.Model):
     imdb_movie_id = models.CharField(blank=False, null=False, unique=True, max_length=100, default="")
     title = models.CharField(blank=False, null=False, max_length=255, default='')
+    year = models.PositiveIntegerField()
     genre1 = models.CharField(blank=False, null=False, max_length=255, default='')
     genre2 = models.CharField(blank=False, null=False, max_length=255, default='')
     genre3 = models.CharField(blank=False, null=False, max_length=255, default='')

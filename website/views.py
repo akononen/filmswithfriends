@@ -13,27 +13,74 @@ from django.db.models import Q
 import json
 import sys
 #"s3", "postgres://testi:saatana@localhost/imdbraw"
-from imdb import IMDb
 
+def dashboard(request):
+    directors= DirectorRating.objects \
+    .filter(user = request.user) \
+    .values("director") \
+    .annotate(Avg("rating")) \
+    .order_by("-rating__avg")[:10]
+
+    writers = WriterRating.objects \
+    .filter(user = request.user) \
+    .values("writer") \
+    .annotate(Avg("rating")) \
+    .order_by("-rating__avg")[:10]
+
+    actors= ActorRating.objects \
+    .filter(user = request.user) \
+    .values("actor") \
+    .annotate(Avg("rating")) \
+    .order_by("-rating__avg")[:10]
+
+    genres= GenreRating.objects \
+    .filter(user = request.user) \
+    .values("genre") \
+    .annotate(Avg("rating")) \
+    .order_by("-rating__avg")[:10]
+
+    genres = list(genres)
+    actors = list(actors)
+    best_movie = {"genre": genres[0]["genre"] + "-" + genres[1]["genre"] + "-" + genres[2]["genre"],
+                  "actor1": actors[0]["actor"],
+                  "actor2": actors[1]["actor"],
+                  "actor3": actors[2]["actor"],
+                  "director": directors[0]["director"],
+                  "writer": writers[0]["writer"]}
+    print(best_movie    )
+    return render(request, "dashboard.html",{"directors": directors,
+                                             "writers": writers,
+                                             "actors":actors,
+                                             "genres":genres,
+                                             "best":best_movie})
 def makedb(request):
     ia = IMDb("s3", "postgres://testi:saatana@localhost/imdbraw", adultSearch=False)
-    #Indexes in database: 1-103045 --> next we will loop backwards
-    #the right amount: 9916896
-    movies_count = 9916896
-    i = 9916896
-    while i != 103046:
-        index = str(i).zfill(7)
-        print(index)
-        success_counter = 1
-        fail_counter = 1
+    idsfile = open("./staticfiles/ids.txt", 'r+' )
+    ids = idsfile.read().splitlines()
+    idsfile.close()
+    ids.sort()
+    movies_count = len(ids)
+    print(movies_count)
+    animation = "||//--\\\\"
+    success_counter = 0
+    fail_counter = 0
+    animation_i = 1
 
-        #try:
-        movie = ia.get_movie(index)
+    for i in ids:
+        a = animation[animation_i % len(animation)]
+        #index = str(i).zfill(7)
+        movie = ia.get_movie(i)
+
         try:
             kind = movie["kind"]
         except KeyError:
             kind = ""
+        # try:
+        #     year = movie["year"]
+        # except KeyError:
+        #     year = 0
 
+        year = 0
         if kind == "movie":
 
             try:
@@ -82,6 +129,7 @@ def makedb(request):
             #try:
             movie_object = Movie(imdb_movie_id = movie.movieID,
                                 title = movie["title"],
+                                year = year,
                                 director = director,
                                 director_id = director_id,
                                 writer = writer,
@@ -101,13 +149,12 @@ def makedb(request):
         else:
             fail_counter += 1
 
-        #fail_counter =+ 1
 
-        print("Process: ", success_counter+fail_counter/movies_count-103045)
+        print(a, a, a, a, "  Process: %5.4f" % (((success_counter+fail_counter)/movies_count)*100), "%  ", a, a, a, a, end="\r")
+
         #print("Fails: ", fail_counter, "   Sucessess: ", success_counter)
         #print("Fail%: ", fail_counter/(fail_counter+success_counter), "   Success%: ", success_counter/(fail_counter+success_counter))
-        i -= 1
-
+        animation_i += 1
     return HttpResponseRedirect("/profile/")
 
 
@@ -225,29 +272,21 @@ def recommendations(request, other_user_id):
     user_gavgs = GenreRating.objects.filter(user = request.user).values("genre").annotate(Avg("rating")).order_by("-rating__avg")
     user_wavgs = WriterRating.objects.filter(user = request.user).values("writer").annotate(Avg("rating")).order_by("-rating__avg")
     user_davgs = DirectorRating.objects.filter(user = request.user).values("director").annotate(Avg("rating")).order_by("-rating__avg")
-    user_aavgs = ActorRating.objects.filter(user = request.user).values("actor").annotate(Avg("rating")).order_by("-rating__avg")
 
     other_user_gavgs = GenreRating.objects.filter(user = other_user_id).values("genre").annotate(Avg("rating")).order_by("-rating__avg")
     other_user_wavgs = WriterRating.objects.filter(user = other_user_id).values("writer").annotate(Avg("rating")).order_by("-rating__avg")
     other_user_davgs = DirectorRating.objects.filter(user = other_user_id).values("director").annotate(Avg("rating")).order_by("-rating__avg")
-    other_user_aavgs = ActorRating.objects.filter(user = other_user_id).values("actor").annotate(Avg("rating")).order_by("-rating__avg")
 
     #finding first common genre from both users --> this is the genre that is
     #used fot searching suggested movies
     genre = get_first_common(user_gavgs, other_user_gavgs, "genre").lower()
     director = get_first_common(user_davgs, other_user_davgs, "director")
-    actor = get_first_common(user_aavgs, other_user_aavgs, "actor")
     writer = get_first_common(user_wavgs, other_user_wavgs, "writer")
 
     directors = get_commons(user_davgs, other_user_davgs, "director")
     writers = get_commons(user_wavgs, other_user_wavgs, "writer")
 
-    #keywords = get_keywords(genre)
-    #movies = get_movies(keywords)
-    print(director)
-    print(writer)
-    print(genre)
-
+    #getting movies that have common genre in some of their genre slots
     all_movies =Movie.objects.filter(Q(genre1=genre)|Q(genre2=genre)|Q(genre3=genre))
 
     common_director1 = all_movies.filter(director=directors[0])
@@ -268,13 +307,10 @@ def recommendations(request, other_user_id):
         common_writer3 = all_movies.filter(writer = writers[2])
     except IndexError:
         common_writer3 = Movie.objects.none()
-    for i in common_director1:
-        print(i.title)
-    for i in common_writer1:
-        print(i.title)
+
+    #making union of all suggestions
     suggestions  = common_director1.union(common_director2, common_director3, common_writer1, common_writer2, common_writer3)
-    for i in suggestions:
-        print(i.title)
+
     #taking out movies that either one has rated
     rated_movies = MovieRating.objects.filter(Q(user = request.user)|Q(user=other_user_id))
     rated_ids = []
@@ -282,24 +318,19 @@ def recommendations(request, other_user_id):
     m_year = []
     m_director = []
     m_writer = []
-    #ia = IMDb()
+
     for rm in rated_movies:
         rated_ids.append(rm.imdb_movie_id)
     print("append")
     for movie in suggestions:
         if movie.imdb_movie_id not in rated_ids:
             movies.append(movie.title)
-            # m = ia.get_movie(movie.imdb_movie_id)
-            # # try:
-            # #     m_year.append(m["year"])
-            # # except KeyError:
-            # #     m_year.append(0)
+
             m_director.append(movie.director)
             m_writer.append(movie.writer)
             print(movie.title)
             print(movie.director)
             print(movie.writer)
     suggestions = zip(movies, m_director, m_writer)
-    #for i in suggestions:
-        #print(i)
+
     return render(request, "recommendations.html", {"suggestions":suggestions})

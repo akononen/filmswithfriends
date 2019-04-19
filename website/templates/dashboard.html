@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="width=60%; float:up">
+<h3 align="center"> Optimal movie just for you would be {{best.genre}} movie, directed by {{best.director}}, written by {{best.writer}}, starring
+  {{best.actor1}}, {{best.actor2}} and {{best.actor3}}. </h3>
+</div>
+<div id="container1" class="container" style="width: 50%; float:left; height:40%">
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+  Highcharts.chart('container1', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Top Directors'
+      },
+
+      xAxis: {
+          type: 'category',
+          labels: {
+              rotation: -45,
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Rating'
+          }
+      },
+      legend: {
+          enabled: false
+      },
+      tooltip: {
+          pointFormat: 'Rating: <b>{point.y:.1f} out of 5.0</b>'
+      },
+      series: [{
+          name: 'Rating',
+          data: [ {%for d in directors %} [' {{d.director}}' , {{d.rating__avg}} ] {% if not forloop.last %},{% endif %}{% endfor %}],
+          dataLabels: {
+              enabled: true,
+              rotation: -90,
+              color: '#FFFFFF',
+              align: 'right',
+              format: '{point.y:.1f}', // one decimal
+              y: 10, // 10 pixels down from the top
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      }]
+  });
+  </script>
+</div>
+<div id="container2" class="container" style="width: 50%; float:right; height:40%">
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+  Highcharts.chart('container2', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Top Writers'
+      },
+
+      xAxis: {
+          type: 'category',
+          labels: {
+              rotation: -45,
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Rating'
+          }
+      },
+      legend: {
+          enabled: false
+      },
+      tooltip: {
+          pointFormat: 'Rating: <b>{point.y:.1f} out of 5.0</b>'
+      },
+      series: [{
+          name: 'Rating',
+          data: [ {%for w in writers %} ['{{w.writer}}' , {{w.rating__avg}} ] {% if not forloop.last %},{% endif %}{% endfor %}],
+          dataLabels: {
+              enabled: true,
+              rotation: -90,
+              color: '#FFFFFF',
+              align: 'right',
+              format: '{point.y:.1f}', // one decimal
+              y: 10, // 10 pixels down from the top
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      }]
+  });
+  </script>
+</div>
+<div id="container3" class="container" style="width: 50%; float:left; height:40%">
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+  Highcharts.chart('container3', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Top Actors'
+      },
+
+      xAxis: {
+          type: 'category',
+          labels: {
+              rotation: -45,
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Rating'
+          }
+      },
+      legend: {
+          enabled: false
+      },
+      tooltip: {
+          pointFormat: 'Rating: <b>{point.y:.1f} out of 5.0</b>'
+      },
+      series: [{
+          name: 'Rating',
+          data: [ {%for a in actors %} ['{{a.actor}}' , {{a.rating__avg}} ] {% if not forloop.last %},{% endif %}{% endfor %}],
+          dataLabels: {
+              enabled: true,
+              rotation: -90,
+              color: '#FFFFFF',
+              align: 'right',
+              format: '{point.y:.1f}', // one decimal
+              y: 10, // 10 pixels down from the top
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      }]
+  });
+  </script>
+</div>
+<div id="container4" class="container" style="width:50%; float:right; height:40%">
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+  Highcharts.chart('container4', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Top Genres'
+      },
+
+      xAxis: {
+          type: 'category',
+          labels: {
+              rotation: -45,
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Rating'
+          }
+      },
+      legend: {
+          enabled: false
+      },
+      tooltip: {
+          pointFormat: 'Rating: <b>{point.y:.1f} out of 5.0</b>'
+      },
+      series: [{
+          name: 'Rating',
+          data: [ {%for g in genres %} [' {{g.genre}}' , {{g.rating__avg}} ] {% if not forloop.last %},{% endif %}{% endfor %}],
+          dataLabels: {
+              enabled: true,
+              rotation: -90,
+              color: '#FFFFFF',
+              align: 'right',
+              format: '{point.y:.1f}', // one decimal
+              y: 10, // 10 pixels down from the top
+              style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      }]
+  });
+  </script>
+</div>
+{% endblock %}
