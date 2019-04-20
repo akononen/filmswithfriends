@@ -12,7 +12,6 @@ from django.db.models import Avg
 from django.db.models import Q
 import json
 import sys
-#"s3", "postgres://testi:saatana@localhost/imdbraw"
 
 def dashboard(request):
     directors= DirectorRating.objects \
@@ -47,7 +46,7 @@ def dashboard(request):
                   "actor3": actors[2]["actor"],
                   "director": directors[0]["director"],
                   "writer": writers[0]["writer"]}
-    print(best_movie    )
+
     return render(request, "dashboard.html",{"directors": directors,
                                              "writers": writers,
                                              "actors":actors,
@@ -152,8 +151,6 @@ def makedb(request):
 
         print(a, a, a, a, "  Process: %5.4f" % (((success_counter+fail_counter)/movies_count)*100), "%  ", a, a, a, a, end="\r")
 
-        #print("Fails: ", fail_counter, "   Sucessess: ", success_counter)
-        #print("Fail%: ", fail_counter/(fail_counter+success_counter), "   Success%: ", success_counter/(fail_counter+success_counter))
         animation_i += 1
     return HttpResponseRedirect("/profile/")
 
