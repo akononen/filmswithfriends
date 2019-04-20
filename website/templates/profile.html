@@ -4,23 +4,27 @@
 {% block title %}Add a friend{% endblock %}
 
 
-<div class="container">
+<div class="container" style="float:left; width:40%>
   <h2>Add a friend</h2>
     <form action="" merhod="post">
       <label for="friend_username">Friends username: </label>
       <input id="friend_username" type="text" name="friend_username">
       <input type="submit" value="Add">
 
-</div>
+
 
 {%endcomment %}
-<div class="container">
+<div class="container" style="float:left; width:60%">
   <h2>Other users: </h2>
   {% for user in user_list %}
   <a href="/recommendations/{{user.id}}">{{user.username}}</a>
   {% endfor %}
 </div>
-<div class="container">
+</div>
+<div class="container" style="float:left; width:40%">
+  <h2><a href="/profile/dashboard"> Check your dashboard</a> </h2>
+  </div>
+<div class="container" style="float:left">
   <h2>Rated movies:</h2>
 
   <table id="rated_movies" class="table table-striped table-bordered" style="width:100%">
