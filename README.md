@@ -12,11 +12,5 @@ https://filmswithfriends.herokuapp.com/
     - See ratings
     - Edit rating
     - Remove rating
-
-## Functinalities TODO:
-  - Add friend
-  - Friends list
-  - Connection with IMDb database
-  - Analyze user ratings
-  - Analyze suitable movies for two users
-  - See suitable movies to watch with a friend
+  - See user dashboard of rating statistics
+  - Check movie suggestions for two users (does not work on Heroku because of Heroku free tier limitations)
