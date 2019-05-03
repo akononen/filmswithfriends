@@ -1,19 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% comment %}
-{% block title %}Add a friend{% endblock %}
 
-
-<div class="container" style="float:left; width:40%>
-  <h2>Add a friend</h2>
-    <form action="" merhod="post">
-      <label for="friend_username">Friends username: </label>
-      <input id="friend_username" type="text" name="friend_username">
-      <input type="submit" value="Add">
-
-
-
-{%endcomment %}
 <div class="container" style="float:left; width:60%">
   <h2>Other users: </h2>
   {% for user in user_list %}

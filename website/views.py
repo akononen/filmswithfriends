@@ -14,6 +14,7 @@ import json
 import sys
 
 def dashboard(request):
+    #fetching 10 items with different types using rating average for each unique type
     directors= DirectorRating.objects \
     .filter(user = request.user) \
     .values("director") \
@@ -38,6 +39,8 @@ def dashboard(request):
     .annotate(Avg("rating")) \
     .order_by("-rating__avg")[:10]
 
+    #postgresql and django queryset indexing is broken, so the querysets are
+    #transformed into lists
     genres = list(genres)
     actors = list(actors)
     best_movie = {"genre": genres[0]["genre"] + "-" + genres[1]["genre"] + "-" + genres[2]["genre"],
@@ -52,6 +55,9 @@ def dashboard(request):
                                              "actors":actors,
                                              "genres":genres,
                                              "best":best_movie})
+
+#can only be used locally, makes a django postgresql database form existing local
+#database
 def makedb(request):
     ia = IMDb("s3", "postgres://testi:saatana@localhost/imdbraw", adultSearch=False)
     idsfile = open("./staticfiles/ids.txt", 'r+' )
